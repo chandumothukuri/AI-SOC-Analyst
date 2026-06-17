@@ -1,0 +1,27 @@
+
+==============================
+SOC INCIDENT REPORT
+==============================
+
+Alert Name : Multiple Failed Logins
+Host       : DC01
+User       : admin
+Severity   : Medium
+Risk Score : 60/100
+
+MITRE ATT&CK
+------------
+Tactic      : Credential Access
+Technique   : T1110
+
+Assessment
+----------
+Potential security event detected.
+
+Recommendation
+--------------
+Investigate the affected system.
+Review logs and user activity.
+Escalate if malicious activity is confirmed.
+
+==============================

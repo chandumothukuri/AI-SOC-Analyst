@@ -1,0 +1,27 @@
+
+==============================
+SOC INCIDENT REPORT
+==============================
+
+Alert Name : Encoded PowerShell Execution
+Host       : WIN10-PC
+User       : Administrator
+Severity   : High
+Risk Score : 90/100
+
+MITRE ATT&CK
+------------
+Tactic      : Execution
+Technique   : T1059.001
+
+Assessment
+----------
+Potential security event detected.
+
+Recommendation
+--------------
+Investigate the affected system.
+Review logs and user activity.
+Escalate if malicious activity is confirmed.
+
+==============================
