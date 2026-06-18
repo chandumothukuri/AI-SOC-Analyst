@@ -1,0 +1,27 @@
+
+==============================
+SOC INCIDENT REPORT
+==============================
+
+Alert Name : Malicious IP Communication
+Host       : WEB01
+User       : SYSTEM
+Severity   : High
+Risk Score : 90/100
+
+MITRE ATT&CK
+------------
+Tactic      : Unknown
+Technique   : Unknown
+
+Assessment
+----------
+Potential security event detected.
+
+Recommendation
+--------------
+Investigate the affected system.
+Review logs and user activity.
+Escalate if malicious activity is confirmed.
+
+==============================

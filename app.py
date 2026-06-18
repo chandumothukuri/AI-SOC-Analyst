@@ -13,7 +13,6 @@ mitre_mapping = {
         "tactic": "Credential Access"
     }
 }
-
 alert_folder = "alerts"
 output_folder = "output"
 
