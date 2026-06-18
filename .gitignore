@@ -2,3 +2,16 @@ venv/
 __pycache__/
 .env
 *.pyc
+
+# Generated reports
+output/
+
+# Streamlit cache
+.streamlit/
+
+# VS Code
+.vscode/
+
+# Python cache
+*.pyo
+*.pyd
