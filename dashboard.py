@@ -9,7 +9,10 @@ from enrichment.virustotal import check_virustotal
 from enrichment.whois_lookup import get_whois
 from enrichment.asset_criticality import get_asset_criticality
 
+from ai.ai_triage import analyze_alert
+from reports.incident_report import generate_incident_report
 # =====================================
+
 # PAGE CONFIG
 # =====================================
 
@@ -194,7 +197,6 @@ mitre_counts = df["MITRE Tactic"].value_counts()
 st.bar_chart(mitre_counts)
 
 st.divider()
-
 # =====================================
 # ALERT INVESTIGATION
 # =====================================
@@ -205,6 +207,7 @@ for _, row in df.iterrows():
 
     with st.expander(f"🔍 {row['Alert']}"):
 
+        # Alert Details
         st.subheader("Alert Details")
 
         st.write(f"**Host:** {row['Host']}")
@@ -213,21 +216,51 @@ for _, row in df.iterrows():
         st.write(f"**Severity:** {row['Severity']}")
         st.write(f"**Risk Score:** {row['Risk Score']}/100")
 
+        # MITRE
         st.subheader("MITRE ATT&CK")
 
         st.write(f"**Tactic:** {row['MITRE Tactic']}")
         st.write(f"**Technique:** {row['MITRE Technique']}")
 
-        # Threat Intelligence
-
+        # Threat Intel
         geo = get_geoip(row["Source IP"])
-
         abuse = check_abuse_score(row["Source IP"])
-
         vt = check_virustotal(row["Source IP"])
         whois_data = get_whois(row["Source IP"])
         criticality = get_asset_criticality(row["Host"])
 
+        alert_data = {
+            "alert_name": row["Alert"],
+            "host": row["Host"],
+            "user": row["User"],
+            "severity": row["Severity"]
+        }
+
+        mitre_data = {
+            "tactic": row["MITRE Tactic"],
+            "technique": row["MITRE Technique"]
+        }
+
+        ai_result = analyze_alert(
+            alert_data,
+            mitre_data,
+            geo,
+            abuse,
+            vt
+        )
+
+        report = generate_incident_report(
+            alert_data,
+            mitre_data,
+            geo,
+            abuse,
+            vt,
+            whois_data,
+            criticality,
+            ai_result
+        )
+
+        # Threat Intelligence
         st.subheader("🌍 Threat Intelligence")
 
         col_a, col_b, col_c = st.columns(3)
@@ -260,7 +293,9 @@ Detections: {vt['detections']}
 Status: {vt['status']}
 """
             )
-        st.subheader("🌐 WHOIS Information") 
+
+        # WHOIS
+        st.subheader("🌐 WHOIS Information")
 
         col_d, col_e = st.columns(2)
 
@@ -279,25 +314,83 @@ ASN: {whois_data['asn']}
 Country: {whois_data['country']}
 """
             )
+
+        # Asset Criticality
         st.subheader("🏢 Asset Criticality")
 
         if criticality == "Critical":
-
             st.error(f"Critical Asset: {criticality}")
 
         elif criticality == "High":
-
             st.warning(f"Asset Criticality: {criticality}")
 
         elif criticality == "Medium":
-
             st.info(f"Asset Criticality: {criticality}")
 
         else:
-
             st.success(f"Asset Criticality: {criticality}")
-          
 
+        # AI Analysis
+        st.subheader("🤖 AI Analysis")
+
+        st.success(
+            f"""
+Executive Summary:
+
+{ai_result['summary']}
+
+Threat Assessment:
+
+{ai_result['threat_assessment']}
+"""
+        )
+
+        col_ai1, col_ai2 = st.columns(2)
+
+        with col_ai1:
+            st.metric(
+                "Confidence",
+                ai_result["confidence"]
+            )
+
+        with col_ai2:
+            st.metric(
+                "Verdict",
+                ai_result["verdict"]
+            )
+
+        st.write("### Recommended Actions")
+
+        for action in ai_result["recommendations"]:
+            st.write(f"• {action}")
+
+        # Incident Report
+        st.subheader("📄 Incident Report")
+
+        st.code(report)
+
+        filename = (
+            row["Alert"]
+            .replace(" ", "_")
+            .lower()
+            + "_incident_report.txt"
+        )
+
+        if st.button(
+            f"💾 Save Report - {row['Alert']}",
+            key=row["Alert"]
+        ):
+
+            with open(
+                f"output/{filename}",
+                "w",
+                encoding="utf-8"
+            ) as f:
+                f.write(report)
+
+            st.success(f"Saved: {filename}")
+
+        # Analyst Recommendation
         st.subheader("Analyst Recommendation")
 
         if row["Severity"] == "High":
@@ -336,7 +429,6 @@ Low priority event.
             )
 
 st.divider()
-
 # =====================================
 # FOOTER
 # =====================================
