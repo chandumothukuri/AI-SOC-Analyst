@@ -11,6 +11,7 @@ from enrichment.asset_criticality import get_asset_criticality
 
 from ai.ai_triage import analyze_alert
 from reports.incident_report import generate_incident_report
+from reports.pdf_report import generate_pdf_report
 # =====================================
 
 # PAGE CONFIG
@@ -368,8 +369,8 @@ Threat Assessment:
         st.subheader("📄 Incident Report")
 
         st.code(report)
-
-        filename = (
+        # Save TXT Report
+        txt_filename = (
             row["Alert"]
             .replace(" ", "_")
             .lower()
@@ -377,18 +378,40 @@ Threat Assessment:
         )
 
         if st.button(
-            f"💾 Save Report - {row['Alert']}",
-            key=row["Alert"]
+            f"💾 Save TXT - {row['Alert']}",
+            key=f"txt_{row['Alert']}"
         ):
 
             with open(
-                f"output/{filename}",
+                f"output/{txt_filename}",
                 "w",
                 encoding="utf-8"
             ) as f:
                 f.write(report)
 
-            st.success(f"Saved: {filename}")
+            st.success(f"Saved: {txt_filename}")
+
+        # Generate PDF Report
+        pdf_filename = (
+            row["Alert"]
+            .replace(" ", "_")
+            .lower()
+            + "_incident_report.pdf"
+        )
+
+        if st.button(
+            f"📄 Generate PDF - {row['Alert']}",
+            key=f"pdf_{row['Alert']}"
+        ):
+
+            generate_pdf_report(
+                report,
+                f"output/{pdf_filename}"
+            )
+
+            st.success(
+                f"PDF Created: {pdf_filename}"
+            )
 
         # Analyst Recommendation
         st.subheader("Analyst Recommendation")
