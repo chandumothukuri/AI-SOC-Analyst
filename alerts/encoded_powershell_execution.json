@@ -1,7 +1,7 @@
 {
     "alert_name": "Encoded PowerShell Execution",
-    "host": "WIN10-PC",
-    "user": "Administrator",
+    "host": "chandumothukuri",
+    "user": "CHANDUMOTHUKURI\\Chandu Mothukuri",
     "source_ip": "192.168.1.10",
     "severity": "High"
 }
