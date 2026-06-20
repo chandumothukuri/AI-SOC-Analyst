@@ -8,6 +8,12 @@ from detection.detection_engine import (
     detect_data_exfiltration
 )
 
+from detection.hunting_rules import (
+    detect_suspicious_powershell,
+    detect_lolbins,
+    detect_suspicious_parent_child
+)
+
 from detection.alert_writer import save_alert
 
 
@@ -25,15 +31,17 @@ for event in events:
 
     alerts = [
 
+        # Existing Detection Engine
         detect_powershell(event),
-
         detect_malware(event),
-
         detect_failed_logins(event),
-
         detect_malicious_ip(event),
+        detect_data_exfiltration(event),
 
-        detect_data_exfiltration(event)
+        # Threat Hunting Rules
+        detect_suspicious_powershell(event),
+        detect_lolbins(event),
+        detect_suspicious_parent_child(event)
 
     ]
 
