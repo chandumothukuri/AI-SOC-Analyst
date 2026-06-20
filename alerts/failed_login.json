@@ -1,7 +1,0 @@
-{
-  "alert_name": "Multiple Failed Logins",
-  "host": "DC01",
-  "user": "admin",
-  "source_ip": "10.0.0.5",
-  "severity": "Medium"
-}

@@ -204,7 +204,7 @@ st.divider()
 
 st.header("🚨 Alert Investigation")
 
-for _, row in df.iterrows():
+for idx, row in df.iterrows():
 
     with st.expander(f"🔍 {row['Alert']}"):
 
@@ -379,7 +379,7 @@ Threat Assessment:
 
         if st.button(
             f"💾 Save TXT - {row['Alert']}",
-            key=f"txt_{row['Alert']}"
+            key=f"txt_{row['Alert']}_{idx}"
         ):
 
             with open(
@@ -401,7 +401,7 @@ Threat Assessment:
 
         if st.button(
             f"📄 Generate PDF - {row['Alert']}",
-            key=f"pdf_{row['Alert']}"
+            key=f"pdf_{row['Alert']}_{idx}"
         ):
 
             generate_pdf_report(

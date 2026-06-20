@@ -15,3 +15,4 @@ output/
 # Python cache
 *.pyo
 *.pyd
+config.py

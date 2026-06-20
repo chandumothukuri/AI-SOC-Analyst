@@ -1,32 +1,72 @@
+import requests
+
+from config import ABUSEIPDB_API_KEY
+
+
 def check_abuse_score(ip):
 
-    abuse_database = {
+    url = (
+        "https://api.abuseipdb.com/api/v2/check"
+    )
 
-        "185.220.101.45": {
-            "abuse_score": 95,
-            "reputation": "Malicious"
-        },
+    headers = {
 
-        "192.168.1.10": {
-            "abuse_score": 5,
-            "reputation": "Clean"
-        },
+        "Accept": "application/json",
 
-        "192.168.1.25": {
-            "abuse_score": 2,
-            "reputation": "Clean"
-        },
+        "Key": ABUSEIPDB_API_KEY
 
-        "10.10.10.15": {
-            "abuse_score": 1,
-            "reputation": "Clean"
-        }
     }
 
-    return abuse_database.get(
-        ip,
-        {
-            "abuse_score": 0,
-            "reputation": "Unknown"
+    params = {
+
+        "ipAddress": ip,
+
+        "maxAgeInDays": 90
+
+    }
+
+    try:
+
+        response = requests.get(
+            url,
+            headers=headers,
+            params=params
+        )
+
+        if response.status_code != 200:
+
+            return {
+
+                "abuse_score": 0,
+
+                "reputation": "API Error"
+
+            }
+
+        data = response.json()
+
+        score = data["data"][
+            "abuseConfidenceScore"
+        ]
+
+        return {
+
+            "abuse_score": score,
+
+            "reputation": (
+                "Malicious"
+                if score > 50
+                else "Clean"
+            )
+
         }
-    )
+
+    except Exception:
+
+        return {
+
+            "abuse_score": 0,
+
+            "reputation": "Error"
+
+        }

@@ -1,7 +1,0 @@
-{
-    "alert_name": "Data Exfiltration Attempt",
-    "host": "FILESERVER01",
-    "user": "backupsvc",
-    "source_ip": "10.10.10.15",
-    "severity": "High"
-}

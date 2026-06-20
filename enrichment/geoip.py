@@ -1,37 +1,44 @@
+import requests
+
+
 def get_geoip(ip):
 
-    geo_database = {
+    try:
 
-        "185.220.101.45": {
-            "country": "Germany",
-            "city": "Berlin",
-            "risk": "Suspicious"
-        },
+        response = requests.get(
+            f"http://ip-api.com/json/{ip}"
+        )
 
-        "192.168.1.10": {
-            "country": "Internal",
-            "city": "Corporate Network",
-            "risk": "Trusted"
-        },
+        data = response.json()
 
-        "192.168.1.25": {
-            "country": "Internal",
-            "city": "HR Network",
-            "risk": "Trusted"
-        },
+        return {
 
-        "10.10.10.15": {
-            "country": "Internal",
-            "city": "Data Center",
-            "risk": "Trusted"
+            "country": data.get(
+                "country",
+                "Unknown"
+            ),
+
+            "city": data.get(
+                "city",
+                "Unknown"
+            ),
+
+            "risk": (
+                "External"
+                if data.get("country")
+                else "Unknown"
+            )
+
         }
-    }
 
-    return geo_database.get(
-        ip,
-        {
+    except Exception:
+
+        return {
+
             "country": "Unknown",
+
             "city": "Unknown",
+
             "risk": "Unknown"
+
         }
-    )
