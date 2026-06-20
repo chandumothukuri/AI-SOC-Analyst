@@ -3,3 +3,6 @@
 {"EventID":1,"Computer":"HR-PC","User":"employee1","Image":"malware.exe","CommandLine":"malware.exe"}
 {"EventID":3,"Computer":"WEB01","User":"SYSTEM","DestinationIp":"185.220.101.45"}
 {"EventID":3,"Computer":"FILESERVER01","User":"backupsvc","BytesSent":25000000}
+{"EventID":4625,"Computer":"DC01","User":"admin","FailedAttempts":20}
+{"EventID":4625,"Computer":"DC01","User":"admin","FailedAttempts":20}
+{"EventID":4625,"Computer":"DC01","User":"admin","FailedAttempts":30}
