@@ -1,7 +1,7 @@
 def analyze_alert(alert, mitre, geo, abuse, vt):
 
     summary = (
-        f"{alert['alert_name']} detected on "
+        f"Alert '{alert['alert_name']}' observed on "
         f"{alert['host']} by user {alert['user']}."
     )
 

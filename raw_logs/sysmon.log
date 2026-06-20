@@ -1,0 +1,5 @@
+{"EventID":1,"Computer":"WIN10-PC","User":"Administrator","Image":"powershell.exe","CommandLine":"powershell.exe -enc SQBFAFgA"}
+{"EventID":4625,"Computer":"DC01","User":"admin","FailedAttempts":8}
+{"EventID":1,"Computer":"HR-PC","User":"employee1","Image":"malware.exe","CommandLine":"malware.exe"}
+{"EventID":3,"Computer":"WEB01","User":"SYSTEM","DestinationIp":"185.220.101.45"}
+{"EventID":3,"Computer":"FILESERVER01","User":"backupsvc","BytesSent":25000000}

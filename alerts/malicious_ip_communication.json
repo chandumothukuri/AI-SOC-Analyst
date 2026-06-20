@@ -1,0 +1,7 @@
+{
+    "alert_name": "Malicious IP Communication",
+    "host": "WEB01",
+    "user": "SYSTEM",
+    "source_ip": "185.220.101.45",
+    "severity": "High"
+}
