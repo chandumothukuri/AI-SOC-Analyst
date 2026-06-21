@@ -2,17 +2,59 @@
 
 An AI-powered Security Operations Center (SOC) Analyst platform that ingests real Sysmon EVTX logs, performs threat detection and hunting, correlates alerts, enriches indicators with threat intelligence, maps findings to MITRE ATT&CK, and generates automated incident reports through an interactive Streamlit dashboard.
 
+**Version:** v1.0
+
 ---
 
-## 🚀 Features
+# 📸 Screenshots
 
-### 🔍 Real Sysmon EVTX Ingestion
+All dashboard screenshots are stored in:
+
+```text
+AI-SOC-Analyst/
+└── screenshots/
+```
+
+### Dashboard Overview
+
+![Dashboard Overview](screenshots/dashboard_overview.png)
+
+### Alert Overview
+
+![Alert Overview](screenshots/alert_overview.png)
+
+### MITRE ATT&CK Summary
+
+![MITRE ATT\&CK Summary](screenshots/mitre_attack_summary.png)
+
+### Alert Investigation
+
+![Alert Investigation](screenshots/alert_investigation.png)
+
+### Threat Intelligence
+
+![Threat Intelligence](screenshots/threat_intelligence.png)
+
+### AI Analysis
+
+![AI Analysis](screenshots/ai_analysis.png)
+
+### Incident Report
+
+![Incident Report](screenshots/incident_report.png)
+
+---
+
+# 🚀 Features
+
+## 🔍 Real Sysmon EVTX Ingestion
 
 * Parse real Windows Sysmon EVTX logs
 * Extract process creation and security events
 * Analyze endpoint activity
+* Perform event-driven security monitoring
 
-### 🚨 Detection Engine
+## 🚨 Detection Engine
 
 * Encoded PowerShell Detection
 * Malware Execution Detection
@@ -20,90 +62,90 @@ An AI-powered Security Operations Center (SOC) Analyst platform that ingests rea
 * Malicious IP Communication Detection
 * Data Exfiltration Detection
 
-### 🎯 Threat Hunting
+## 🎯 Threat Hunting
 
-* Suspicious PowerShell Activity
+* Suspicious PowerShell Activity Detection
 * LOLBin Detection
 * Suspicious Parent-Child Process Detection
+* MITRE ATT&CK-aligned hunting logic
 
-### 🔗 Alert Correlation
+## 🔗 Alert Correlation
 
-Correlates multiple detections into higher-confidence incidents.
+Correlates multiple alerts into higher-confidence incidents.
 
-Example:
+### Example
 
 * Encoded PowerShell Execution
 * Suspicious Parent Child Process
 
 ➡️ Multi-Stage Attack Detected
 
-### 🧠 MITRE ATT&CK Mapping
+## 🧠 MITRE ATT&CK Mapping
 
 Automatically maps alerts to MITRE ATT&CK tactics and techniques.
 
-Examples:
+| Alert                           | Tactic              | Technique |
+| ------------------------------- | ------------------- | --------- |
+| Encoded PowerShell Execution    | Execution           | T1059.001 |
+| Multiple Failed Logins          | Credential Access   | T1110     |
+| Malicious IP Communication      | Command and Control | T1071     |
+| Data Exfiltration Attempt       | Exfiltration        | T1041     |
+| Suspicious Parent Child Process | Execution           | T1059     |
 
-| Alert                        | Tactic              | Technique |
-| ---------------------------- | ------------------- | --------- |
-| Encoded PowerShell Execution | Execution           | T1059.001 |
-| Multiple Failed Logins       | Credential Access   | T1110     |
-| Malicious IP Communication   | Command and Control | T1071     |
-| Data Exfiltration Attempt    | Exfiltration        | T1041     |
+## 🌍 Threat Intelligence Enrichment
 
-### 🌍 Threat Intelligence Enrichment
+Integrates multiple intelligence sources:
 
-Enriches indicators with:
-
-* GeoIP Information
-* AbuseIPDB Reputation
+* GeoIP Analysis
+* AbuseIPDB Reputation Checks
 * VirusTotal Intelligence
-* WHOIS Data
+* WHOIS Enrichment
 
-### 🏢 Asset Criticality Analysis
+## 🏢 Asset Criticality Analysis
 
-Classifies assets by business importance:
+Classifies assets based on business importance:
 
 * Critical
 * High
 * Medium
 * Low
 
-### 🤖 AI Alert Triage
+## 🤖 AI Alert Triage
 
-Automatically evaluates alerts and generates:
+Automatically generates:
 
 * Executive Summary
 * Threat Assessment
 * Confidence Score
 * Verdict
-* Recommended Actions
+* Analyst Recommendations
 
-### 📄 Automated Incident Reporting
+## 📄 Automated Incident Reporting
 
-Generates analyst-ready incident reports including:
+Generates analyst-ready incident reports containing:
 
 * Alert Details
-* MITRE ATT&CK Mapping
 * Threat Intelligence
 * Asset Criticality
-* AI Assessment
+* MITRE ATT&CK Mapping
+* AI Analysis
 * Recommended Actions
 
-### 📊 Streamlit SOC Dashboard
+## 📊 Streamlit SOC Dashboard
 
 Interactive dashboard featuring:
 
 * SOC Metrics
-* Alert Severity Distribution
-* Risk Score Analysis
+* Alert Overview
 * MITRE ATT&CK Summary
 * Threat Intelligence
-* AI Triage Results
-* Incident Reports
+* AI Triage
+* Incident Reporting
+* Risk Score Analytics
 
 ---
 
-## 🏗️ Project Architecture
+# 🏗️ Project Architecture
 
 ```text
 AI-SOC-Analyst
@@ -115,38 +157,83 @@ AI-SOC-Analyst
 ├── parsers/
 ├── raw_logs/
 ├── reports/
+├── screenshots/
+│   ├── dashboard_overview.png
+│   ├── alert_overview.png
+│   ├── mitre_attack_summary.png
+│   ├── alert_investigation.png
+│   ├── threat_intelligence.png
+│   ├── ai_analysis.png
+│   └── incident_report.png
+│
 ├── output/
 │
 ├── dashboard.py
 ├── run_evtx_detection.py
 ├── test_hunting.py
 ├── test_correlation.py
-└── requirements.txt
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# 🔬 Detection Workflow
 
-### Languages
+```text
+Sysmon EVTX Logs
+        │
+        ▼
+EVTX Parser
+        │
+        ▼
+Detection Engine
+        │
+        ▼
+Threat Hunting Rules
+        │
+        ▼
+Alert Correlation
+        │
+        ▼
+Threat Intelligence
+        │
+        ▼
+MITRE ATT&CK Mapping
+        │
+        ▼
+AI Triage
+        │
+        ▼
+Incident Report
+        │
+        ▼
+SOC Dashboard
+```
+
+---
+
+# 🛠️ Tech Stack
+
+## Programming Language
 
 * Python
 
-### Security Tools
+## Security Technologies
 
 * Sysmon
-* MITRE ATT&CK
+* MITRE ATT&CK Framework
 
-### Frameworks
+## Dashboard
 
 * Streamlit
 
-### Data Processing
+## Data Processing
 
 * EVTX Parsing
 * JSON
 
-### Threat Intelligence
+## Threat Intelligence
 
 * GeoIP
 * AbuseIPDB
@@ -155,56 +242,7 @@ AI-SOC-Analyst
 
 ---
 
-## 📸 Dashboard Capabilities
-
-### SOC Metrics
-
-* Total Alerts
-* Critical Alerts
-* High Severity Alerts
-* Average Risk Score
-
-### Threat Analysis
-
-* MITRE ATT&CK Mapping
-* Threat Intelligence Enrichment
-* AI Triage
-
-### Incident Response
-
-* Automated Incident Reports
-* Correlated Attack Detection
-* Analyst Recommendations
-
----
-
-## 🔬 Example Detection Workflow
-
-```text
-Sysmon EVTX Logs
-        ↓
-EVTX Parser
-        ↓
-Detection Engine
-        ↓
-Threat Hunting Rules
-        ↓
-Alert Correlation
-        ↓
-Threat Intelligence
-        ↓
-MITRE ATT&CK Mapping
-        ↓
-AI Triage
-        ↓
-Incident Report
-        ↓
-SOC Dashboard
-```
-
----
-
-## ▶️ Installation
+# ▶️ Installation
 
 Clone the repository:
 
@@ -219,7 +257,7 @@ Create a virtual environment:
 python -m venv venv
 ```
 
-Activate virtual environment:
+Activate the virtual environment:
 
 ### Windows
 
@@ -235,7 +273,7 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Run Detection Engine
+# ▶️ Run Detection Engine
 
 ```bash
 python run_evtx_detection.py
@@ -243,7 +281,7 @@ python run_evtx_detection.py
 
 ---
 
-## ▶️ Launch Dashboard
+# ▶️ Launch Dashboard
 
 ```bash
 streamlit run dashboard.py
@@ -251,7 +289,7 @@ streamlit run dashboard.py
 
 ---
 
-## 🎯 Key Skills Demonstrated
+# 🎯 Skills Demonstrated
 
 * SOC Operations
 * Threat Hunting
@@ -259,14 +297,16 @@ streamlit run dashboard.py
 * Incident Response
 * Threat Intelligence
 * MITRE ATT&CK
+* Security Monitoring
 * Log Analysis
 * Python Automation
 * Security Analytics
-* Security Monitoring
+* Alert Correlation
+* AI-Assisted Security Analysis
 
 ---
 
-## 🔮 Future Improvements
+# 🔮 Future Improvements
 
 * Sigma Rule Support
 * Splunk Integration
@@ -274,24 +314,27 @@ streamlit run dashboard.py
 * IOC Management
 * Email Alerting
 * Detection Coverage Dashboard
-* Threat Intelligence APIs
+* Advanced Threat Intelligence APIs
 * SIEM Integration
+* SOAR Automation
+* Case Management
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Chandu Mothukuri**
 
 Cybersecurity Student | SOC Analyst Aspirant | Detection Engineering Enthusiast
 
 GitHub:
+
 https://github.com/chandumothukuri
 
 ---
 
-## ⭐ Version
+# ⭐ Release
 
-Current Release:
+**Current Release: v1.0**
 
-**v1.0**
+Released: June 2026
