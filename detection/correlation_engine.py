@@ -27,10 +27,37 @@ def correlate_alerts(alerts):
 
     ):
 
+        powershell_alert = None
+
+        for alert in alerts:
+
+            if alert.get(
+                "alert_name"
+            ) == "Suspicious PowerShell Activity":
+
+                powershell_alert = alert
+                break
+
+        if powershell_alert is None:
+
+            powershell_alert = alerts[0]
+
         correlated.append({
 
             "alert_name":
             "Multi-Stage Attack Detected",
+
+            "host":
+            powershell_alert.get(
+                "host",
+                "Unknown"
+            ),
+
+            "user":
+            powershell_alert.get(
+                "user",
+                "Unknown"
+            ),
 
             "severity":
             "Critical",

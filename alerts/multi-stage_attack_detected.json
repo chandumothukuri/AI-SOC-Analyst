@@ -1,5 +1,7 @@
 {
     "alert_name": "Multi-Stage Attack Detected",
+    "host": "chandumothukuri",
+    "user": "CHANDUMOTHUKURI\\Chandu Mothukuri",
     "severity": "Critical",
     "evidence": [
         "Encoded PowerShell Execution",
