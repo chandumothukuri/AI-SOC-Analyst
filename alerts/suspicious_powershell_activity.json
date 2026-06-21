@@ -1,0 +1,10 @@
+{
+    "alert_name": "Suspicious PowerShell Activity",
+    "host": "chandumothukuri",
+    "user": "CHANDUMOTHUKURI\\Chandu Mothukuri",
+    "severity": "High",
+    "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "command_line": "powershell  -enc SQBFAFgA",
+    "mitre_tactic": "Execution",
+    "mitre_technique": "T1059.001"
+}

@@ -1,0 +1,10 @@
+{
+    "alert_name": "Suspicious Parent Child Process",
+    "host": "chandumothukuri",
+    "user": "CHANDUMOTHUKURI\\Chandu Mothukuri",
+    "severity": "High",
+    "parent_process": "C:\\Windows\\System32\\cmd.exe",
+    "child_process": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "mitre_tactic": "Execution",
+    "mitre_technique": "T1059"
+}
