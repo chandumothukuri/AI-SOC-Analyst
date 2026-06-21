@@ -64,6 +64,21 @@ mitre_mapping = {
     "Data Exfiltration Attempt": {
         "technique": "T1041",
         "tactic": "Exfiltration"
+    },
+
+    "Suspicious PowerShell Activity": {
+        "technique": "T1059.001",
+        "tactic": "Execution"
+    },
+
+    "Suspicious Parent Child Process": {
+        "technique": "T1059",
+        "tactic": "Execution"
+    },
+
+    "Multi-Stage Attack Detected": {
+        "technique": "T1059.001 + T1059",
+        "tactic": "Execution"
     }
 }
 
@@ -82,8 +97,10 @@ for file in os.listdir(alert_folder):
         alerts_raw.append(alert)
 
         severity = alert["severity"]
+        if severity == "Critical":
+            risk_score = 100
 
-        if severity == "High":
+        elif severity == "High":
             risk_score = 90
 
         elif severity == "Medium":
@@ -92,24 +109,75 @@ for file in os.listdir(alert_folder):
         else:
             risk_score = 30
 
-        mitre = mitre_mapping.get(
-            alert["alert_name"],
-            {
-                "technique": "Unknown",
-                "tactic": "Unknown"
-            }
-        )
+        #######
+        mitre = {
+
+            "technique":
+            alert.get(
+                "mitre_technique",
+                mitre_mapping.get(
+                    alert["alert_name"],
+                    {}
+                ).get(
+                    "technique",
+                    "Unknown"
+                )
+            ),
+
+            "tactic":
+            alert.get(
+                "mitre_tactic",
+                mitre_mapping.get(
+                    alert["alert_name"],
+                    {}
+                ).get(
+                     "tactic",
+                     "Unknown"
+                )
+            )
+
+        }
+
+        
 
         alerts.append({
-            "Alert": alert["alert_name"],
-            "Host": alert["host"],
-            "User": alert["user"],
-            "Source IP": alert["source_ip"],
-            "Severity": severity,
-            "Risk Score": risk_score,
-            "MITRE Tactic": mitre["tactic"],
-            "MITRE Technique": mitre["technique"]
-        })
+
+            "Alert":
+            alert.get(
+                "alert_name",
+                 "Unknown"
+            ),
+
+            "Host":
+            alert.get(
+                "host",
+                "Unknown"
+            ),
+            "User":
+            alert.get(
+                "user",
+                "Unknown"
+            ),
+
+            "Source IP":
+            alert.get(
+                "source_ip",
+                "N/A"
+            ),
+
+            "Severity":
+            severity,
+
+            "Risk Score":
+            risk_score,
+
+            "MITRE Tactic":
+            mitre["tactic"],
+
+            "MITRE Technique":
+            mitre["technique"]
+
+         })
 
 df = pd.DataFrame(alerts)
 
@@ -127,25 +195,53 @@ if st.sidebar.button("🔄 Refresh"):
 # =====================================
 # METRICS
 # =====================================
-
 total_alerts = len(df)
 
-high_alerts = len(df[df["Severity"] == "High"])
+critical_alerts = len(
+    df[df["Severity"] == "Critical"]
+)
 
-medium_alerts = len(df[df["Severity"] == "Medium"])
+high_alerts = len(
+    df[df["Severity"] == "High"]
+)
 
-avg_risk = round(df["Risk Score"].mean())
+medium_alerts = len(
+    df[df["Severity"] == "Medium"]
+)
+
+avg_risk = round(
+    df["Risk Score"].mean()
+)
 
 st.header("📊 SOC Metrics")
 
-c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3, c4, c5 = st.columns(5)
 
-c1.metric("Total Alerts", total_alerts)
-c2.metric("High Alerts", high_alerts)
-c3.metric("Medium Alerts", medium_alerts)
-c4.metric("Average Risk", avg_risk)
+c1.metric(
+    "Total Alerts",
+    total_alerts
+)
 
-st.divider()
+c2.metric(
+    "Critical",
+    critical_alerts
+)
+
+c3.metric(
+    "High",
+    high_alerts
+)
+
+c4.metric(
+    "Medium",
+    medium_alerts
+)
+
+c5.metric(
+    "Average Risk",
+    avg_risk
+)
+
 
 # =====================================
 # CHARTS
@@ -192,6 +288,18 @@ st.divider()
 # =====================================
 
 st.header("🎯 MITRE ATT&CK Summary")
+st.subheader(
+    "🔥 Top Alert Types"
+)
+
+alert_counts = (
+    df["Alert"]
+    .value_counts()
+)
+
+st.bar_chart(
+    alert_counts
+)
 
 mitre_counts = df["MITRE Tactic"].value_counts()
 
@@ -224,12 +332,40 @@ for idx, row in df.iterrows():
         st.write(f"**Technique:** {row['MITRE Technique']}")
 
         # Threat Intel
-        geo = get_geoip(row["Source IP"])
-        abuse = check_abuse_score(row["Source IP"])
-        vt = check_virustotal(row["Source IP"])
-        whois_data = get_whois(row["Source IP"])
-        criticality = get_asset_criticality(row["Host"])
+        if row["Source IP"] != "N/A":
 
+            geo = get_geoip(row["Source IP"])
+            abuse = check_abuse_score(row["Source IP"])
+            vt = check_virustotal(row["Source IP"])
+            whois_data = get_whois(row["Source IP"])
+
+        else:
+
+            geo = {
+                "country": "N/A",
+                "city": "N/A",
+                "risk": "N/A"
+            }
+
+            abuse = {
+                "abuse_score": 0,
+                "reputation": "N/A"
+            }
+
+            vt = {
+                "detections": 0,
+                "status": "N/A"
+            }
+
+            whois_data = {
+                "owner": "N/A",
+                "asn": "N/A",
+                "country": "N/A"
+            }
+            
+        criticality = get_asset_criticality(
+            row["Host"]
+        )
         alert_data = {
             "alert_name": row["Alert"],
             "host": row["Host"],

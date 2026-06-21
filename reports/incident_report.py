@@ -1,84 +1,67 @@
-def correlate_alerts(alerts):
+def generate_incident_report(
+    alert,
+    mitre,
+    geo,
+    abuse,
+    vt,
+    whois_data,
+    criticality,
+    ai_result
+):
 
-    correlated = []
+    report = f"""
+=========================================
+INCIDENT REPORT
+=========================================
 
-    alert_names = [
+EXECUTIVE SUMMARY
+-----------------------------------------
+{ai_result['summary']}
 
-        alert.get(
-            "alert_name",
-            ""
-        )
+ALERT DETAILS
+-----------------------------------------
+Alert Name : {alert['alert_name']}
+Host       : {alert.get('host', 'Unknown')}
+User       : {alert.get('user', 'Unknown')}
+Severity   : {alert['severity']}
 
-        for alert in alerts
+THREAT INTELLIGENCE
+-----------------------------------------
+Country    : {geo['country']}
+City       : {geo['city']}
+Risk       : {geo['risk']}
 
-        if alert
+Abuse Score: {abuse['abuse_score']}
+Reputation : {abuse['reputation']}
 
-    ]
+VT Detects : {vt['detections']}
+VT Status  : {vt['status']}
 
-    if (
+WHOIS Owner: {whois_data['owner']}
+ASN        : {whois_data['asn']}
 
-        "Encoded PowerShell Execution"
-        in alert_names
+ASSET CRITICALITY
+-----------------------------------------
+{criticality}
 
-        and
+MITRE ATT&CK
+-----------------------------------------
+Tactic     : {mitre['tactic']}
+Technique  : {mitre['technique']}
 
-        "Suspicious Parent Child Process"
-        in alert_names
+AI TRIAGE
+-----------------------------------------
+Verdict    : {ai_result['verdict']}
+Confidence : {ai_result['confidence']}
 
-    ):
+Threat Assessment:
+{ai_result['threat_assessment']}
 
-        powershell_alert = None
+RECOMMENDED ACTIONS
+-----------------------------------------
+"""
 
-        for alert in alerts:
+    for action in ai_result["recommendations"]:
+        report += f"\n• {action}"
 
-            if (
-                alert.get("alert_name")
-                == "Suspicious PowerShell Activity"
-            ):
-
-                powershell_alert = alert
-                break
-
-        if powershell_alert is None:
-
-            powershell_alert = alerts[0]
-
-        correlated.append({
-
-            "alert_name":
-            "Multi-Stage Attack Detected",
-
-            "host":
-            powershell_alert.get(
-                "host",
-                "Unknown"
-            ),
-
-            "user":
-            powershell_alert.get(
-                "user",
-                "Unknown"
-            ),
-
-            "severity":
-            "Critical",
-
-            "evidence":
-            [
-
-                "Encoded PowerShell Execution",
-                "Suspicious Parent Child Process"
-
-            ],
-
-            "mitre_techniques":
-            [
-
-                "T1059.001",
-                "T1059"
-
-            ]
-
-        })
-
-    return correlated
+    return report

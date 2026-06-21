@@ -1,18 +1,29 @@
 venv/
-__pycache__/
-.env
+**pycache**/
 *.pyc
+*.pyo
+*.pyd
+
+.env
+config.py
 
 # Generated reports
+
 output/
 
-# Streamlit cache
+# Generated alerts
+
+alerts/*.json
+
+# Streamlit
+
 .streamlit/
 
 # VS Code
+
 .vscode/
 
-# Python cache
-*.pyo
-*.pyd
-config.py
+# OS files
+
+.DS_Store
+Thumbs.db
