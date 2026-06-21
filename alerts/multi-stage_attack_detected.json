@@ -1,0 +1,12 @@
+{
+    "alert_name": "Multi-Stage Attack Detected",
+    "severity": "Critical",
+    "evidence": [
+        "Encoded PowerShell Execution",
+        "Suspicious Parent Child Process"
+    ],
+    "mitre_techniques": [
+        "T1059.001",
+        "T1059"
+    ]
+}
